@@ -93,7 +93,11 @@ function Set-IntuneWin32App {
 
         [parameter(Mandatory = $false, HelpMessage = "Specify whether to have the Win32 application featured in Company Portal or not.")]
         [bool]$CompanyPortalFeaturedApp,
-
+        
+        [parameter(Mandatory = $false, HelpMessage = "Provide an array of OrderedDictionary objects as additional requirement rule, e.g. for file, registry or script rules, that will be used for the Win32 application.")]
+        [ValidateNotNullOrEmpty()]
+        [System.Collections.Specialized.OrderedDictionary[]]$AdditionalRequirementRule,
+        
         [parameter(Mandatory = $false, HelpMessage = "Specify whether to allow the Win32 application to be uninstalled from the Company Portal app when assigned as available.")]
         [bool]$AllowAvailableUninstall
     )
@@ -157,6 +161,9 @@ function Set-IntuneWin32App {
             }
             if ($PSBoundParameters["CompanyPortalFeaturedApp"]) {
                 $Win32AppBody.Add("isFeatured", $CompanyPortalFeaturedApp)
+            }
+            if ($PSBoundParameters["AdditionalRequirementRule"]) {
+                $Win32AppBody.Add("requirementRules", $AdditionalRequirementRule)
             }
             if ($PSBoundParameters["AllowAvailableUninstall"]) {
                 $Win32AppBody.Add("allowAvailableUninstall", $AllowAvailableUninstall)
